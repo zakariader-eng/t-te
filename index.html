@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collection de têtes</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+<rect width='64' height='64' fill='black'/>
+<path d='M8 48 L14 20 L28 36 L32 16 L36 36 L50 20 L56 48 Z'
+fill='gold'/>
+<rect x='10' y='48' width='44' height='6' fill='gold'/>
+</svg>">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+}
+
+.hidden{
+    display:none;
+}
+
+/* CONNEXION */
+
+.login-screen{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#000;
+    z-index:9999;
+}
+
+.login-box{
+    background:#1b1b1b;
+    padding:30px;
+    border-radius:15px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(255,215,0,0.2);
+}
+
+.login-box h1{
+    color:gold;
+    margin-bottom:10px;
+}
+
+.login-box input{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    margin:15px 0;
+}
+
+.login-box button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:gold;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#errorMessage{
+    color:#ff4d4d;
+    margin-top:10px;
+}
+
+/* HEADER */
+
+header{
+    text-align:center;
+    padding:40px 20px;
+}
+
+header h1{
+    color:gold;
+    margin-bottom:10px;
+}
+
+/* CARTES */
+
+.friend-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+    padding:25px;
+    max-width:1400px;
+    margin:auto;
+}
+
+.friend-card{
+    background:#1b1b1b;
+    border-radius:15px;
+    overflow:hidden;
+    transition:.3s;
+}
+
+.friend-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 20px rgba(255,215,0,0.4);
+}
+
+.friend-card img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+.friend-info{
+    padding:15px;
+    text-align:center;
+}
+
+.friend-info h3{
+    margin-bottom:15px;
+}
+
+.friend-info button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:gold;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* MODAL (CORRIGÉ) */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    z-index:10000;
+    overflow-y:auto;
+}
+
+.modal-content{
+    background:#1b1b1b;
+    width:95%;
+    max-width:800px;
+    max-height:95vh;
+    overflow-y:auto;
+    margin:20px auto;
+    padding:20px;
+    border-radius:15px;
+    position:relative;
+}
+
+.modal-content img{
+    width:100%;
+    max-height:400px;
+    object-fit:contain;
+    border-radius:10px;
+    margin:15px 0;
+}
+
+.modal-content p{
+    margin:8px 0;
+    word-wrap:break-word;
+}
+
+.close{
+    position:absolute;
+    top:10px;
+    right:15px;
+    font-size:30px;
+    cursor:pointer;
+    color:white;
+}
+
+/* SCROLL BAR (optionnel mais propre) */
+
+.modal::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar{
+    width:8px;
+}
+
+.modal::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb{
+    background:gold;
+    border-radius:10px;
+}
+</style>
+</head>
+<body>
+
+<!-- Écran de connexion -->
+
+<div id="loginScreen" class="login-screen">
+    <div class="login-box">
+
+        <h1>Collection Tête</h1>
+
+        <p>Entrez le code d'accès à la collection </p>
+
+        <input type="password" id="passwordInput" placeholder="Code">
+
+        <button id="loginBtn">Entrer</button>
+
+        <p id="errorMessage"></p>
+
+    </div>
+</div>
+
+<!-- Site -->
+
+<div id="siteContent" class="hidden">
+
+    <header>
+        <h1>Albums de tête</h1>
+        <p>Collection Têtes </p>
+    </header>
+
+    <div id="friendContainer" class="friend-grid"></div>
+
+</div>
+
+<!-- MODAL -->
+
+<div id="modal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close">&times;</span>
+
+        <h2 id="modalName"></h2>
+
+        <img id="modalImage" src="" alt="">
+
+        <p><strong>Âge :</strong> <span id="modalAge"></span></p>
+
+        <p><strong>Taille :</strong> <span id="modalHeight"></span></p>
+
+        <p><strong>Pays/Ville :</strong> <span id="modalCity"></span></p>
+
+        <p><strong>Surnom :</strong> <span id="modalNickname"></span></p>
+
+        <p><strong>ID Discord:</strong> <span id="modalReference"></span></p>
+
+        <p><strong>Description :</strong></p>
+
+        <p id="modalDescription"></p>
+
+    </div>
+
+</div>
+
+<script>
+
+// =========================
+// MOT DE PASSE
+// =========================
+
+const PASSWORD = "auber93_";
+
+const loginBtn = document.getElementById("loginBtn");
+const passwordInput = document.getElementById("passwordInput");
+const loginScreen = document.getElementById("loginScreen");
+const siteContent = document.getElementById("siteContent");
+const errorMessage = document.getElementById("errorMessage");
+
+let locked = false;
+
+loginBtn.addEventListener("click", () => {
+
+    if(locked) return;
+
+    if(passwordInput.value === PASSWORD){
+
+        loginScreen.style.display = "none";
+        siteContent.classList.remove("hidden");
+
+    }else{
+
+        locked = true;
+
+        let countdown = 5;
+
+        errorMessage.textContent =
+        "Code incorrect t vrm autiste toi. Réessayez dans 5s";
+
+        const timer = setInterval(() => {
+
+            countdown--;
+
+            errorMessage.textContent =
+            `Code incorrect. Réessayez dans ${countdown}s`;
+
+            if(countdown <= 0){
+
+                clearInterval(timer);
+
+                errorMessage.textContent = "";
+
+                locked = false;
+            }
+
+        },1000);
+    }
+});
+
+passwordInput.addEventListener("keypress", e => {
+
+    if(e.key === "Enter"){
+        loginBtn.click();
+    }
+
+});
+
+// =========================
+// AMIS
+// =========================
+
+const friends = [
+
+{
+    name:"Selimite",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475616580971794666/FullSizeRender.jpg?ex=6a1eacc8&is=6a1d5b48&hm=89afe0f975707c32fc8fd430efbbfd377750b38d88c2f1766d23961595b4dbcd&",
+    age:"16 - 17 ans",
+    height:"1m67",
+    city:"France",
+    nickname:"Seli",
+    reference:"selimitte",
+    description:"Dépressive."
+},
+
+{
+    name:"Lulu",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475616858768932874/541b8708-295a-47cf-ab3f-9e90f5a19524.jpg?ex=6a1ead0a&is=6a1d5b8a&hm=c665b690097ffd9006ce1a2a5628285c592061863360d670b93edd65545d8707&",
+    age:"11 ans",
+    height:"1m54",
+    city:"Village en Thailande",
+    nickname:"Lulu",
+    reference:"lu95thail_32294",
+    description:"Petite ange connasse conne puente aime Dessiner et jouer"
+},
+
+{
+    name:"Giga",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475617148498874500/IMG_20251222_122952.jpg?ex=6a1ead4f&is=6a1d5bcf&hm=e88d47aa3654a62cba20451ebc4bcf046608cc6f23dcb706d5b23c3190ccd1fd&",
+    age:"14 ans",
+    height:"1m75",
+    city:"France",
+    nickname:"Giga",
+    reference:"g1.izzy",
+    description:"Gay Gay gay."
+},
+
+{
+    name:"God Chat",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475617366384836840/IMG20251028202450.jpg?ex=6a1ead83&is=6a1d5c03&hm=ca484317cba89f3189f72ee0de4eafe6627e5b1291736b0bde886af6fc3f16c2&",
+    age:"16 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"god_chat",
+    reference:"god_chat",
+    description:"Toujours motivé pour sortir."
+},
+
+
+{
+    name:"Xioloix",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475617708950425670/20260209_181949.jpg?ex=6a1eadd5&is=6a1d5c55&hm=420afeba4dc55f1221c5194c3e906eb84f6d5d6f8f1e01b3445261d6d3b1d899&",
+    age:"16 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Xio",
+    reference:"xioloix_67",
+    description:"Toujours motivé pour sortir."
+},
+
+
+{
+    name:"Jokeross",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475617795185311814/image.png?ex=6a1eadea&is=6a1d5c6a&hm=036b829bd306c77ab45150a2840891ccbbc0d987bbfd00d835fdcefab0feba7c&",
+    age:"20 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Joke",
+    reference:"king6905",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Toxic -- Skylor",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475618082889269462/image.png?ex=6a1eae2e&is=6a1d5cae&hm=3a44ebd69bda5a0e8682c07da630acfda3ac12d2da01d37951cffb66e3125dae&",
+    age:"16 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Sky ou Toxic",
+    reference:"toxic_lt1",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Ras_Le_Bol",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475618270814929109/IMG_2937.jpg?ex=6a1eae5b&is=6a1d5cdb&hm=e859c260b607981a62fad41428c57f9784724ffa7140467ab390da548eb81ee2&",
+    age:"20 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Ras",
+    reference:".rien_ne.sera.blesse.",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Clumsy",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1485999931348222036/image.png?ex=6a1ee048&is=6a1d8ec8&hm=32da5cc025e6fccaaf84089a249c67982d4d575084b400d1a60733e7e3da3ec8&",
+    age:"14 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Clumsy",
+    reference:"bloxd_girl",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Saekoz -- Not_Bloxd",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1492602453600899075/image.png?ex=6a1e819c&is=6a1d301c&hm=e12af77c74120510b21a07967276b6da071aea29ffc49dc6e3e6a67e79052375&",
+    age:"14 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Saeko",
+    reference:"trapzed_fr",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Darder240",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1505996140485546014/image.png?ex=6a1f1cb3&is=6a1dcb33&hm=9d1d527f45fc96cd5c050da59fd5b0d28842e4383c0be148072bb4ff395c35c7&",
+    age:"22 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Darder",
+    reference:"771915_",
+    description:"Toujours motivé pour sortir."
+},
+
+{
+    name:"Jokeross",
+    image:"https://cdn.discordapp.com/attachments/1475616321411743885/1475617795185311814/image.png?ex=6a1eadea&is=6a1d5c6a&hm=036b829bd306c77ab45150a2840891ccbbc0d987bbfd00d835fdcefab0feba7c&",
+    age:"20 ans",
+    height:"1m82",
+    city:"France",
+    nickname:"Joke",
+    reference:"king6905",
+    description:"Toujours motivé pour sortir."
+}
+
+];
+
+// =========================
+// GÉNÉRATION CARTES
+// =========================
+
+const container = document.getElementById("friendContainer");
+
+friends.forEach((friend,index)=>{
+
+    const card = document.createElement("div");
+
+    card.className = "friend-card";
+
+    card.innerHTML = `
+        <img src="${friend.image}" alt="${friend.name}">
+        <div class="friend-info">
+            <h3>${friend.name}</h3>
+            <button onclick="openModal(${index})">Infos</button>
+        </div>
+    `;
+
+    container.appendChild(card);
+
+});
+
+// =========================
+// MODAL
+// =========================
+
+const modal = document.getElementById("modal");
+
+function openModal(index){
+
+    const friend = friends[index];
+
+    document.getElementById("modalName").textContent = friend.name;
+    document.getElementById("modalImage").src = friend.image;
+    document.getElementById("modalAge").textContent = friend.age;
+    document.getElementById("modalHeight").textContent = friend.height;
+    document.getElementById("modalCity").textContent = friend.city;
+    document.getElementById("modalNickname").textContent = friend.nickname;
+    document.getElementById("modalReference").textContent = friend.reference;
+    document.getElementById("modalDescription").textContent = friend.description;
+
+    modal.style.display = "block";
+}
+
+document.querySelector(".close").onclick = () => {
+    modal.style.display = "none";
+};
+
+window.onclick = (e) => {
+    if(e.target === modal){
+        modal.style.display = "none";
+    }
+};
+
+</script>
+
+</body>
+</html>
